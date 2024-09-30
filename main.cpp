@@ -5,6 +5,7 @@ using std::cin, std::cout;
 
 int main()
 {
+    // The dots fill up the boxes and will be replaced by X or O once the game begins
     char Game[3][3] = {{'.', '.', '.'}, {'.', '.', '.'}, {'.', '.', '.'}};
 
     Player P1, P2;

@@ -24,6 +24,7 @@ void start(Player& P1, Player& P2){
     cout << "\nPlayer 2: " << P2.letter;
 }
 
+// This function is where the gaming happens
 void fill_up(char Game[][3], Player& P1, Player& P2){
     cout << "\nPlayer 1 goes first, select 1 to 9 to play in any box\n\n";
     cout << "1 | 2 | 3\n---------\n4 | 5 | 6 \n---------\n7 | 8 | 9";
@@ -36,6 +37,7 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
         int play{0};
         bool legal = false;
 
+        // Player 1 always goes first
         if ((count + 2) % 2 == 0) {
             do {
                 cout << "\n\nPlayer 1 (" << P1.letter << ") Plays: ";
@@ -57,20 +59,23 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
                     }
                 }
 
+                // If the play was legal, then the game continues
+                // Or else the do while loop runs again
                 if (legal) {
                     played.push_back(play);
                     which_box(Game, play, P1.letter);
                 }
 
             } while (!legal);
-        } else {
+        }
+        else {
             do {
                 cout << "\n\nPlayer 2 (" << P2.letter << ") Plays: ";
                 cin >> play;
 
                 if (cin.fail()) {
                     cout << "\nInvalid input. Please enter a number between 1 and 9." << endl;
-                    cin.clear(); // Clear the error flag
+                    cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     continue; // Continue to prompt for input
                 }
@@ -84,6 +89,8 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
                     }
                 }
 
+                // If the play was legal, then the game continues
+                // Or else the do while loop runs again
                 if (legal) {
                     played.push_back(play);
                     which_box(Game, play, P2.letter);
@@ -92,6 +99,7 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
             } while (!legal);
         }
 
+        // You can't win tic tac toe until at least 5 plays so we only begin to check at that point
         if (count >= 4){
             check(Game, P1, P2, winner);
         }
@@ -99,7 +107,6 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
         cout << "\n" << Game[0][0] << "  " << Game[0][1] << "  " << Game[0][2] <<
                 "\n\n" << Game[1][0] << "  " << Game[1][1] << "  " << Game[1][2] <<
                 "\n\n" << Game[2][0] << "  " << Game[2][1] << "  " << Game[2][2] << endl;
-
 
         ++count;
 
@@ -110,6 +117,7 @@ void fill_up(char Game[][3], Player& P1, Player& P2){
     } while (!winner);
 }
 
+// replace the dot in the box with X or O
 void which_box(char Game[][3], int play, char letter){
     switch (play) {
         case 1:
@@ -146,6 +154,7 @@ void which_box(char Game[][3], int play, char letter){
 
 void check(char Game[][3], Player& P1, Player& P2, bool& winner){
     for(int i=0; i<3; ++i){
+        // Check rows
         if(Game[i][0] == Game[i][1] && Game[i][1] == Game[i][2] && Game[i][1] != '.'){
             if(Game[i][0] == P1.letter){
                 cout << "Player 1 Wins\n";
@@ -158,6 +167,7 @@ void check(char Game[][3], Player& P1, Player& P2, bool& winner){
                 return;
             }
         }
+        // Check columns
         if(Game[0][i] == Game[1][i] && Game[1][i] == Game[2][i] && Game[1][i] != '.'){
             if(Game[0][i] == P1.letter){
                 cout << "Player 1 Wins\n";
@@ -171,6 +181,7 @@ void check(char Game[][3], Player& P1, Player& P2, bool& winner){
             }
         }
     }
+        // Check Diagonals
         if((Game[0][0] == Game[1][1] && Game[1][1] == Game[2][2]) ||
            (Game[0][2] == Game[1][1] && Game[1][1] == Game[2][0]) && Game[1][1] != '.'){
             if(Game[1][1] == P1.letter){
